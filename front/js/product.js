@@ -76,7 +76,7 @@ function addToCart() {
   //Variable qui contient les éléments souhaités
   const basket = {
     id: id,
-    quantity: quantity.value,
+    quantity: parseInt(quantity.value),
     color: color.value,
   };
   function validOrder(e) {
@@ -110,13 +110,14 @@ function addToCart() {
 
     //Si le produit est déjà dans le panier, on ajoute la quantité
     if (productInBasket) {
-      productInBasket.quantity =
-        Number(productInBasket.quantity) + Number(basket.quantity);
+      productInBasket.quantity = productInBasket.quantity + basket.quantity;
+
       //On enregistre le panier dans le localStorage
       localStorage.setItem("basket", JSON.stringify(itemBasket));
     } else {
       //Si le produit n'est pas dans le panier, on ajoute le produit
       itemBasket.push(basket);
+
       //On enregistre le panier dans le localStorage
       localStorage.setItem("basket", JSON.stringify(itemBasket));
     }
