@@ -96,20 +96,111 @@ function displayCart(cartProducts) {
 }
 displayCart(cartProducts);
 
-//Prix total du panier
-//Variable du prix
-
-//fonction modifier les quantités
-
-//fonction supprimer l'article du panier
-function deleteItem(cartProducts) {
-  for (product of cartProducts) {
-    removeEventListener("click", product);
+//Quantité totale du panier
+function totalQuantity(cartProducts) {
+  let totalQuantity = 0;
+  for (let singleproduct of cartProducts) {
+    totalQuantity += singleproduct.quantity;
+    console.log(totalQuantity);
+    let totalQuantityCart = document.getElementById("totalQuantity");
+    totalQuantityCart.innerText = totalQuantity;
   }
 }
-deleteItem(cartProducts);
+totalQuantity(cartProducts);
 
-/* <div class="cart__price">
-<p>Total (<span id="totalQuantity"><!-- 2 --></span> articles) : <span id="totalPrice"><!-- 84,00 --></span>
-  €</p>
-</div> */
+//Prix total du panier
+function totalPrice(cartProducts) {
+  let totalPrice = 0;
+  for (let singleproduct of cartProducts) {
+    fetch(`http://localhost:3000/api/products/${singleproduct.id}`)
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+      })
+      .then((product) => {
+        totalPrice += product.price * singleproduct.quantity;
+        console.log(totalPrice);
+        let totalPriceCart = document.getElementById("totalPrice");
+        totalPriceCart.innerText = totalPrice + " €";
+      });
+  }
+}
+totalPrice(cartProducts);
+
+// //Supprimer un article du panier
+// function deleteItem() {
+//   let deleteItem = document.getElementsByClassName("deleteItem");
+//   for (let i = 0; i < deleteItem.length; i++) {
+//     deleteItem[i].addEventListener("click", function (e) {
+//       e.preventDefault();
+//       let deleteItem = e.target;
+//       deleteItem.parentElement.parentElement.parentElement.remove();
+//       let id = deleteItem.parentElement.parentElement.parentElement.dataset.id;
+//       let color =
+//         deleteItem.parentElement.parentElement.parentElement.dataset.color;
+//       console.log(id);
+//       console.log(color);
+//       for (let i = 0; i < cartProducts.length; i++) {
+//         if (cartProducts[i].id == id && cartProducts[i].color == color) {
+//           cartProducts.splice(i, 1);
+//           localStorage.setItem("cart", JSON.stringify(cartProducts));
+//           console.log(cartProducts);
+//         }
+//       }
+//     });
+//   }
+// }
+// deleteItem();
+
+// //Modifier la quantité d'un article du panier
+// function modifyQuantity() {
+//   let inputSection = document.getElementsByClassName("itemQuantity");
+//   for (let i = 0; i < inputSection.length; i++) {
+//     inputSection[i].addEventListener("change", function (e) {
+//       e.preventDefault();
+//       let inputSection = e.target;
+//       let id =
+//         inputSection.parentElement.parentElement.parentElement.parentElement
+//           .dataset.id;
+//       let color =
+//         inputSection.parentElement.parentElement.parentElement.parentElement
+//           .dataset.color;
+//       console.log(id);
+//       console.log(color);
+//       for (let i = 0; i < cartProducts.length; i++) {
+//         if (cartProducts[i].id == id && cartProducts[i].color == color) {
+//           cartProducts[i].quantity = inputSection.value;
+//           localStorage.setItem("cart", JSON.stringify(cartProducts));
+//           console.log(cartProducts);
+//         }
+//       }
+//     });
+//   }
+// }
+// modifyQuantity();
+
+// //Vider le panier
+// function emptyCart() {
+//   let emptyCart = document.getElementById("emptyCart");
+//   emptyCart.addEventListener("click", function (e) {
+//     e.preventDefault();
+//     localStorage.clear();
+//     window.location.reload();
+//   });
+// }
+// emptyCart();
+
+// //Valider le panier
+// function validateCart() {
+//   let validateCart = document.getElementById("validateCart");
+//   validateCart.addEventListener("click", function (e) {
+//     e.preventDefault();
+//     if (cartProducts.length == 0) {
+//       alert("Votre panier est vide");
+//     } else {
+//       window.location.href = "order.html";
+//     }
+//   });
+// }
+// validateCart();
