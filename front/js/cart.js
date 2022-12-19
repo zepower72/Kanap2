@@ -114,17 +114,19 @@ function displayCart(cartProducts) {
 
 displayCart(cartProducts);
 
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+
 //Fonction Quantité par article
 //Sélection de l'ID dans html
 const elementQuantity = document.getElementById("totalQuantity");
 let totalquantity = 0;
- 
+
 function totalQuantities(quantity) {
   // Utilisation de parseInt pour convertir un argument en une chaîne de caractère
-    const quantitysum = parseInt(quantity);
- //Ajout de la quantité à la quantité totale
-    totalquantity += quantitysum;
-    //Affichage de la quantité totale
+  const quantitysum = parseInt(quantity);
+  //Ajout de la quantité à la quantité totale
+  totalquantity += quantitysum;
+  //Affichage de la quantité totale
   elementQuantity.innerText = totalquantity;
 }
 
@@ -141,14 +143,13 @@ function incrementationTotalPrice(qty, price) {
 }
 
 // fonction de mise à jour du prix et de la quantité
-function updatePriceAndQuantity(id, quantity, singleproduct) {
+function updatePriceAndQuantity(id, quantity) {
   //La find()méthode renvoie la valeur du premier élément qui réussit un test
-  //La find()méthode exécute une fonction pour chaque élément du tableau. 
+  //La find()méthode exécute une fonction pour chaque élément du tableau.
   //Si la fonction renvoie true, la find()méthode renvoie la valeur de l'élément, et ne vérifie pas les autres valeurs. Sinon, elle renvoie undefined.
   let product = cartProducts.find((product) => product.id === id);
-
   product.quantity = quantity;
-
+  //Sauvegarde des produits du localStorage
   saveBasket(cartProducts);
   location.reload();
   alert("Votre panier a été mis à jour");
@@ -158,6 +159,9 @@ function deleteProduct(id) {
   let product = cartProducts.find((product) => product.id === id);
   let index = cartProducts.indexOf(product);
   // https://www.w3schools.com/jsref/jsref_indexof_array.asp
+  // La méthode splice() supprime également un ou plusieurs éléments du tableau. Elle prend en premier argument l'index à partir duquel
+  //on commence la suppression et en deuxième argument le nombre d'éléments à supprimer.
+  // Après cette opération, elle réindexe les éléments pour qu'il n'y ait pas de case vide, puis diminue la longueur du tableau de 1
   cartProducts.splice(index, 1);
   saveBasket(cartProducts);
   location.reload();
@@ -176,7 +180,9 @@ function deleteArticle() {
 }
 deleteArticle();
 
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // Fonction de validation du formulaire
+
 let firstName = document.getElementById("firstName");
 let lastName = document.getElementById("lastName");
 let address = document.getElementById("address");
@@ -217,7 +223,7 @@ function validForm() {
   let reAddress = new RegExp(
     "^[0-9]{1,5}(?:(?:[,. ]){1}[-a-zA-Zàâäéèêëïîôöùûüç]+)+"
   );
-  if (!address.value.match(reAdress)) {
+  if (!address.value.match(reAddress)) {
     addressErrorMsg.innerText = "Merci de renseigner votre adresse";
   } else {
     addressErrorMsg.innerText = "";
@@ -240,11 +246,11 @@ function validForm() {
 
 bouton.addEventListener("click", validForm);
 
-//Fonction envoi de la commande
+//Fonction envoi de la commande sur clic du bouton
 
 bouton.addEventListener("click", (event) => {
   event.preventDefault();
-
+  // création du fichier de contact
   let contact = {
     firstName: firstName.value,
     lastName: lastName.value,
@@ -252,15 +258,18 @@ bouton.addEventListener("click", (event) => {
     city: city.value,
     email: email.value,
   };
+  //  Variable de tableau de produits
   let products = [];
+  // boucle pour récupérer les produits du LS
   for (let product of cartProducts) {
     products.push(product.id);
   }
+  // Variable de la commande
   let order = {
     contact,
     products,
   };
-
+  // variable de l'envoi de la commande
   let options = {
     method: "POST",
     body: JSON.stringify(order),
@@ -268,12 +277,14 @@ bouton.addEventListener("click", (event) => {
       "Content-Type": "application/json",
     },
   };
+  // envoi de la commande sur l'API en méthode POST
   fetch("http://localhost:3000/api/products/order", options)
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
       localStorage.setItem("order", JSON.stringify(data));
       window.location.href = "confirmation.html";
+      // redirection vers la page de confirmation
     })
     .catch((error) => {
       console.log(error);
