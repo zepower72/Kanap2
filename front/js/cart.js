@@ -181,7 +181,7 @@ function deleteArticle() {
 deleteArticle();
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-// Fonction de validation du formulaire
+// Validation du formulaire
 
 let firstName = document.getElementById("firstName");
 let lastName = document.getElementById("lastName");
@@ -190,66 +190,64 @@ let city = document.getElementById("city");
 let email = document.getElementById("email");
 let bouton = document.getElementById("order");
 
-let firstNameErrorMsg = firstName.nextElementSibling;
-let lastNameErrorMsg = lastName.nextElementSibling;
-let addressErrorMsg = address.nextElementSibling;
-let cityErrorMsg = city.nextElementSibling;
-let mailErrorMsg = email.nextElementSibling;
-// https://www.w3schools.com/jsref/prop_element_nextelementsibling.asp
+// verification des infos client
+bouton.addEventListener("click", regTest);
 
-//Expressions
-// https://www.youtube.com/watch?v=dinW2QTSNl4
-// https://regex101.com/
-//Regex.IsMatch Méthode =>Indique si l'expression régulière trouve une correspondance dans la chaîne d'entrée.
-
-/*si la valeur de champ est différente du test regex, 
-alors message d'erreur,sinon, pas de message*/
-
-function validForm() {
-  let reFirstName = new RegExp("[A-Z][a-z]+");
-  if (!firstName.value.match(reFirstName)) {
-    firstNameErrorMsg.innerText = "Merci de renseigner votre prénom";
+// regEx verification méthode test
+/*La méthode test() de RegExp va également rechercher des correspondances entre une expression régulière et une chaine de caractères 
+mais va cette fois-ci renvoyer le booléen true si au moins une correspondance a été trouvée ou false dans le cas contraire.*/
+//Création de variables type Txt,adress et mail
+const regexTxt = /^[A-Za-zàâäéèêëïîôöùûüç]+$/;
+const regexAddress = /^[A-Za-z0-9]{5,50}$/;
+const regexEmail = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
+function regTest(click) {
+  if (regexTxt.test(firstName.value) === false) {
+    click.preventDefault();
+    msgError("firstNameErrorMsg");
+    return;
+  } else msgOk("firstNameErrorMsg");
+  if (regexTxt.test(lastName.value) === false) {
+    click.preventDefault();
+    msgError("lastNameErrorMsg");
+    return;
+  } else msgOk("lastNameErrorMsg");
+  if (regexAddress.test(address.value) === true) {
+    click.preventDefault();
+    msgError("addressErrorMsg");
+    return;
+  } else msgOk("addressErrorMsg");
+  if (regexTxt.test(city.value) === false) {
+    click.preventDefault();
+    msgError("cityErrorMsg");
+    return;
+  } else msgOk("cityErrorMsg");
+  if (regexEmail.test(email.value) === false || email.value === "") {
+    click.preventDefault();
+    msgError("emailErrorMsg");
+    return;
   } else {
-    firstNameErrorMsg.innerText = "";
+    click.preventDefault();
+    msgOk("emailErrorMsg");
   }
-
-  let reLastName = new RegExp("[A-Z][a-z]+");
-  if (!lastName.value.match(reLastName)) {
-    lastNameErrorMsg.innerText = "Merci de renseigner votre nom";
-  } else {
-    lastNameErrorMsg.innerText = "";
-  }
-
-  let reAddress = new RegExp(
-    "^[0-9]{1,5}(?:(?:[,. ]){1}[-a-zA-Zàâäéèêëïîôöùûüç]+)+"
-  );
-  if (!address.value.match(reAddress)) {
-    addressErrorMsg.innerText = "Merci de renseigner votre adresse";
-  } else {
-    addressErrorMsg.innerText = "";
-  }
-
-  let reCity = new RegExp("[A-Z][a-z]+");
-  if (!city.value.match(reCity)) {
-    cityErrorMsg.innerText = "Merci de renseigner votre ville";
-  } else {
-    cityErrorMsg.innerText = "";
-  }
-
-  let reEmail = new RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$");
-  if (!email.value.match(reEmail)) {
-    mailErrorMsg.innerText = "Merci de renseigner votre email";
-  } else {
-    mailErrorMsg.innerText = "";
-  }
+  let isComplete = confirm("Voulez vous valider votre panier ?");
+  if (isComplete === true) {
+    click.preventDefault();
+    panierFinal();
+  } else click.preventDefault();
 }
 
-bouton.addEventListener("click", validForm);
+// message d'erreur en fonction de l'emplacement de la saisie
+function msgError(location) {
+  document.getElementById(location).innerText = "Verifier votre saisie";
+}
 
-//Fonction envoi de la commande sur clic du bouton
+// message ok en fonction de l'emplacement de la saisie
+function msgOk(location) {
+  document.getElementById(location).innerText = "";
+}
 
-bouton.addEventListener("click", (event) => {
-  event.preventDefault();
+//creation du fichier à envoyer
+function panierFinal() {
   // création du fichier de contact
   let contact = {
     firstName: firstName.value,
@@ -289,4 +287,4 @@ bouton.addEventListener("click", (event) => {
     .catch((error) => {
       console.log(error);
     });
-});
+}

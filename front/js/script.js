@@ -14,14 +14,26 @@ fetch("http://localhost:3000/api/products")
 //Fonction d'affichage des articles
 function affichageArticles(articles) {
   //Boucle for avec la variable "product" de l'argument "articles"
+  //Elle va parcourir chaque produit dans tous les articles
   for (const product of articles) {
     //Récupération des informations de l'id "items"
+    /*Lorsqu'un document HTML est chargé dans un navigateur Web, il devient un objet document .
+    L' objet document est le nœud racine du document HTML.
+    L' objet document est une propriété de l' objet window .
+    L' objet document est accessible avec :
+    window.documentou justedocument*/
+    //https://fr.javascript.info/basic-dom-node-properties
+
+    //La getElementById()méthode est l'une des méthodes les plus courantes dans le DOM HTML.
+    //Il est utilisé presque chaque fois pour lire ou modifier un élément HTML.
     let cards = document.getElementById("items");
 
     //Contenu HTML à créer
     //Insertion du lien hypertexte
     const lienElement = document.createElement("a");
+    //La createElement()méthode crée un nœud d'élément.
     cards.appendChild(lienElement);
+    //La appendChild()méthode ajoute un nœud (élément) en tant que dernier enfant d'un élément.
     lienElement.href = `product.html?id=${product._id}`;
 
     //Insertion de l'article

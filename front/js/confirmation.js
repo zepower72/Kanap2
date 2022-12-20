@@ -5,4 +5,4 @@ Ensuite, récupération du numéro de commande et affichage du numéro de comman
 Suppression du lS*/
 let newId = new URL(window.location.href).searchParams.get("orderId");
 document.getElementById("orderId").innerHTML = newId;
-localStorage.clear();
+//localStorage.clear();

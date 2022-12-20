@@ -4,14 +4,15 @@
 
 //la variable params récupère l'url de la page
 const params = new URLSearchParams(window.location.search);
-console.log(window.location.search);
+console.log(window.location.search); //affichage de l'URL de la page courante
 //https://www.matthieufesselier.com/blog/urlsearchparams-les-parametres-durls-tout-simplement-en-javascript
 // Boucle pour itérer sur chaque paramètre en array
+// Utilisation de la "Keys méthode" pour obtenir un itérateur qui permet de parcourir toutes les clés de paramètre de recherche dans la chaine de requête
 for (const param of params) {
   console.log(param);
 }
 // la variable id va récupérer la valeur du paramètre _id
-const id = params.get("id");
+const id = params.get("id"); //renvoie la première valeur associée au parmètre 'id"
 const urlProduct = `http://localhost:3000/api/products/${id}`;
 console.log(urlProduct);
 
@@ -46,7 +47,7 @@ function displayproduct(article) {
   //Insertion de la description
   descriptionProduct.innerText = article.description;
   /*Insertion de l'option
-  Utilisation d'une boucle*/
+  Utilisation d'une boucle qui permet de parcourir tous les éléments*/
   for (let i = 0; i < article.colors.length; i++) {
     //https://www.w3schools.com/jsref/jsref_for.asp
     const option = document.createElement("option");
@@ -58,7 +59,7 @@ function displayproduct(article) {
 
   return displayproduct;
 }
-//Je fais appel à fetch pour l'URL de la page produit
+//Je fais appel à fetch pour éxécuter l'URL de la page produit
 fetch(urlProduct)
   //Première promesse, qui récupére la réponse en json
   .then((response) => response.json())
@@ -103,7 +104,8 @@ function addToCart() {
     //Lorsque vous utilisez le JSON.parse()sur un JSON dérivé d'un tableau, la méthode renverra un tableau JavaScript, au lieu d'un objet JavaScript.
     const itemBasket = JSON.parse(basketInStorage);
 
-    //On vérifie si le produit est déjà dans le panier
+    //On vérifie si le produit est déjà dans le panier//passe chaque élément dans la fonction et renvoie vrai ou faux
+    // https://www.digitalocean.com/community/tutorials/js-array-search-methods-fr
     const productInBasket = itemBasket.find(
       (item) => item.id === basket.id && item.color === basket.color
     );
