@@ -1,8 +1,6 @@
-// PAGE CONFIRMATION
+localStorage.clear();
 
-/*Récupération de l'URL. 
-Ensuite, récupération du numéro de commande et affichage du numéro de commande.
-Suppression du lS*/
-let newId = new URL(window.location.href).searchParams.get("orderId");
-document.getElementById("orderId").innerHTML = newId;
-//localStorage.clear();
+let url = new URL(window.location.href);
+let id = url.searchParams.get("id");
+
+document.getElementById("orderId").innerHTML = `${id}`;

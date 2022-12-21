@@ -280,8 +280,7 @@ function panierFinal() {
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
-      localStorage.setItem("order", JSON.stringify(data));
-      window.location.href = "confirmation.html";
+      window.location.href = `confirmation.html?id=${data.orderId}`;
       // redirection vers la page de confirmation
     })
     .catch((error) => {
