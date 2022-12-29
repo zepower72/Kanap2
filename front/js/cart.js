@@ -197,37 +197,37 @@ bouton.addEventListener("click", regTest);
 /*La méthode test() de RegExp va également rechercher des correspondances entre une expression régulière et une chaine de caractères 
 mais va cette fois-ci renvoyer le booléen true si au moins une correspondance a été trouvée ou false dans le cas contraire.*/
 //Création de variables type Txt,adress et mail
-const regexTxt = /^[A-Za-zàâäéèêëïîôöùûüç]+$/;
-const regexAddress = /^[A-Za-z0-9]{5,50}$/;
+const regexTxt = /^[A-Za-zàâäéèêëïîôöùûüç\s]+$/;
+const regexAddress = /^[A-Za-z0-9àâäéèêëïîôöùûüç\s]{5,50}$/;
 const regexEmail = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
 function regTest(click) {
   if (regexTxt.test(firstName.value) === false) {
     click.preventDefault();
     msgError("firstNameErrorMsg");
     return;
-  } else msgOk("firstNameErrorMsg");
+  }
+
   if (regexTxt.test(lastName.value) === false) {
     click.preventDefault();
     msgError("lastNameErrorMsg");
     return;
-  } else msgOk("lastNameErrorMsg");
-  if (regexAddress.test(address.value) === true) {
+  }
+  if (regexAddress.test(address.value) === false) {
     click.preventDefault();
     msgError("addressErrorMsg");
     return;
-  } else msgOk("addressErrorMsg");
+  }
   if (regexTxt.test(city.value) === false) {
     click.preventDefault();
     msgError("cityErrorMsg");
     return;
-  } else msgOk("cityErrorMsg");
+  }
   if (regexEmail.test(email.value) === false || email.value === "") {
     click.preventDefault();
     msgError("emailErrorMsg");
     return;
   } else {
     click.preventDefault();
-    msgOk("emailErrorMsg");
   }
   let isComplete = confirm("Voulez vous valider votre panier ?");
   if (isComplete === true) {
