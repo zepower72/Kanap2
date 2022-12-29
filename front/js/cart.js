@@ -241,11 +241,6 @@ function msgError(location) {
   document.getElementById(location).innerText = "Verifier votre saisie";
 }
 
-// message ok en fonction de l'emplacement de la saisie
-function msgOk(location) {
-  document.getElementById(location).innerText = "";
-}
-
 //creation du fichier à envoyer
 function panierFinal() {
   // création du fichier de contact
