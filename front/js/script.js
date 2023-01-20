@@ -24,8 +24,7 @@ function affichageArticles(articles) {
     window.documentou justedocument*/
     //https://fr.javascript.info/basic-dom-node-properties
 
-    //La getElementById()méthode est l'une des méthodes les plus courantes dans le DOM HTML.
-    //Il est utilisé presque chaque fois pour lire ou modifier un élément HTML.
+    //getElementById est utilisé presque chaque fois pour lire ou modifier un élément HTML.
     let cards = document.getElementById("items");
 
     //Contenu HTML à créer
@@ -34,6 +33,7 @@ function affichageArticles(articles) {
     //La createElement()méthode crée un nœud d'élément.
     cards.appendChild(lienElement);
     //La appendChild()méthode ajoute un nœud (élément) en tant que dernier enfant d'un élément.
+    https://www.alsacreations.com/astuce/lire/1764-Les-template-strings-en-JavaScript.html
     lienElement.href = `product.html?id=${product._id}`;
 
     //Insertion de l'article

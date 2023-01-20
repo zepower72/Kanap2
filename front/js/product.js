@@ -1,13 +1,11 @@
 // Page produit
 
-// Récupération de l'id du produit via l' URL
-
 //la variable params récupère l'url de la page
 const params = new URLSearchParams(window.location.search);
 console.log(window.location.search); //affichage de l'URL de la page courante
-//https://www.matthieufesselier.com/blog/urlsearchparams-les-parametres-durls-tout-simplement-en-javascript
+//fr.javascript.info/url
 // Boucle pour itérer sur chaque paramètre en array
-// Utilisation de la "Keys méthode" pour obtenir un itérateur qui permet de parcourir toutes les clés de paramètre de recherche dans la chaine de requête
+// Utilisation de la "Keys méthode" pour obtenir un itérateur qui permet de parcourir toutes les clés de paramètre de recherche dans la chaine de requête https: 
 for (const param of params) {
   console.log(param);
 }
@@ -81,8 +79,10 @@ function addToCart() {
     color: color.value,
   };
   function validOrder(e) {
-    if (basket.quantity <= 0 || basket.color === "") {
-      alert("Veuillez choisir une couleur et une quantité");
+    if (basket.quantity <= 0 || basket.quantity > 100 || basket.color === "") {
+      alert(
+        "Veuillez choisir une couleur et une quantité. Les articles étant en nombre limité, la quantité maximale commandée sera bloquée à 100 unités"
+      );
       e.preventDefault();
     } else {
       alert("Votre commande a bien été prise en compte");
@@ -106,13 +106,19 @@ function addToCart() {
 
     //On vérifie si le produit est déjà dans le panier//passe chaque élément dans la fonction et renvoie vrai ou faux
     // https://www.digitalocean.com/community/tutorials/js-array-search-methods-fr
+    //La find()méthode renvoie la valeur du premier élément qui réussit un test
+    //La find()méthode exécute une fonction pour chaque élément du tableau.
+    //Si la fonction renvoie true, la find()méthode renvoie la valeur de l'élément, et ne vérifie pas les autres valeurs. Sinon, elle renvoie undefined.
     const productInBasket = itemBasket.find(
       (item) => item.id === basket.id && item.color === basket.color
     );
 
-    //Si le produit est déjà dans le panier, on ajoute la quantité
+    //Si le produit est déjà dans le panier, on ajoute la quantité (maximale de 100)
     if (productInBasket) {
-      productInBasket.quantity = productInBasket.quantity + basket.quantity;
+      productInBasket.quantity =
+        productInBasket.quantity + basket.quantity > 100
+          ? 100
+          : productInBasket.quantity + basket.quantity;
 
       //On enregistre le panier dans le localStorage
       localStorage.setItem("basket", JSON.stringify(itemBasket));

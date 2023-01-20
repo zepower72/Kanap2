@@ -13,11 +13,7 @@ function saveBasket(cartProducts) {
 function displayCart(cartProducts) {
   for (let singleproduct of cartProducts) {
     fetch(`http://localhost:3000/api/products/${singleproduct.id}`)
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-      })
+      .then((response) => response.json())
       .then((product) => {
         console.log(product);
 
@@ -119,6 +115,7 @@ displayCart(cartProducts);
 //Fonction Quantité par article
 //Sélection de l'ID dans html
 const elementQuantity = document.getElementById("totalQuantity");
+// déclaration des variables qui vont contenir des nombres
 let totalquantity = 0;
 
 function totalQuantities(quantity) {
@@ -133,6 +130,7 @@ function totalQuantities(quantity) {
 //Fonction Prix total par article
 
 let elementPrice = document.getElementById("totalPrice");
+// déclaration des variables qui vont contenir des nombres
 let totalPrice = 0;
 function incrementationTotalPrice(qty, price) {
   let priceOfProduct = qty * price;
@@ -142,11 +140,8 @@ function incrementationTotalPrice(qty, price) {
   elementPrice.innerText = totalPrice;
 }
 
-// fonction de mise à jour du prix et de la quantité
+// fonction de mise à jour du prix ET de la quantité
 function updatePriceAndQuantity(id, quantity) {
-  //La find()méthode renvoie la valeur du premier élément qui réussit un test
-  //La find()méthode exécute une fonction pour chaque élément du tableau.
-  //Si la fonction renvoie true, la find()méthode renvoie la valeur de l'élément, et ne vérifie pas les autres valeurs. Sinon, elle renvoie undefined.
   let product = cartProducts.find((product) => product.id === id);
   product.quantity = quantity;
   //Sauvegarde des produits du localStorage
@@ -173,6 +168,8 @@ function deleteArticle() {
   for (let deleteButton of deleteButtons) {
     deleteButton.addEventListener("click", (event) => {
       let article = event.target.closest(".cart__item");
+      //La closest()méthode recherche dans l'arborescence DOM les éléments qui correspondent à un sélecteur CSS spécifié.
+      // La closest()méthode commence à l'élément lui-même, puis aux ancêtres (parent, grand-parent, ...) jusqu'à ce qu'une correspondance soit trouvée.
       let id = article.getAttribute("data-id");
       deleteProduct(id);
     });
